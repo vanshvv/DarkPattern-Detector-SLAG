@@ -2,50 +2,111 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+  Design system: "Editorial Investigation"
+  Newsreader (display) + Inter (UI) · editorial near-black + crimson accent.
+  Every colour used in a component must come from a token below — no raw
+  red-500 / green-500 in JSX, so light and dark stay in sync automatically.
+*/
+
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
+    --background: 40 20% 98.5%;
+    --foreground: 240 12% 10%;
+
+    --surface: 0 0% 100%;
     --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
+    --card-foreground: 240 12% 10%;
     --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 346 77% 49%;
-    --primary-foreground: 355.7 100% 97.3%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 346 77% 49%;
-    --radius: 0.5rem;
+    --popover-foreground: 240 12% 10%;
+
+    --primary: 346 74% 44%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 240 8% 94%;
+    --secondary-foreground: 240 12% 14%;
+
+    --muted: 240 10% 95.5%;
+    --muted-foreground: 240 6% 40%;
+
+    --accent: 240 10% 94%;
+    --accent-foreground: 240 12% 14%;
+
+    --destructive: 0 72% 45%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 240 8% 88%;
+    --input: 240 8% 86%;
+    --ring: 346 74% 44%;
+
+    /* Semantic status — contrast-checked against --background (>= 4.5:1) */
+    --danger: 0 70% 42%;
+    --danger-foreground: 0 0% 100%;
+    --danger-soft: 0 76% 96%;
+
+    --warn: 32 90% 34%;
+    --warn-foreground: 0 0% 100%;
+    --warn-soft: 40 90% 94%;
+
+    --safe: 152 62% 27%;
+    --safe-foreground: 0 0% 100%;
+    --safe-soft: 152 55% 94%;
+
+    --info: 222 72% 45%;
+    --info-foreground: 0 0% 100%;
+    --info-soft: 216 90% 96%;
+
+    --shadow-color: 240 30% 20%;
+    --radius: 0.75rem;
   }
 
   .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 346 77% 49%;
-    --primary-foreground: 355.7 100% 97.3%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 346 77% 49%;
+    /* Off-black rather than #000 — avoids OLED smear and lets cards separate */
+    --background: 240 12% 6.5%;
+    --foreground: 40 12% 96%;
+
+    --surface: 240 10% 9.5%;
+    --card: 240 10% 9.5%;
+    --card-foreground: 40 12% 96%;
+    --popover: 240 10% 11%;
+    --popover-foreground: 40 12% 96%;
+
+    --primary: 346 82% 60%;
+    --primary-foreground: 346 90% 8%;
+
+    --secondary: 240 8% 16%;
+    --secondary-foreground: 40 12% 96%;
+
+    --muted: 240 8% 15%;
+    --muted-foreground: 240 6% 68%;
+
+    --accent: 240 8% 17%;
+    --accent-foreground: 40 12% 96%;
+
+    --destructive: 0 72% 58%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 240 8% 19%;
+    --input: 240 8% 22%;
+    --ring: 346 82% 60%;
+
+    --danger: 0 84% 68%;
+    --danger-foreground: 0 60% 10%;
+    --danger-soft: 0 45% 14%;
+
+    --warn: 38 95% 62%;
+    --warn-foreground: 32 80% 10%;
+    --warn-soft: 36 45% 14%;
+
+    --safe: 152 60% 58%;
+    --safe-foreground: 152 70% 8%;
+    --safe-soft: 152 35% 13%;
+
+    --info: 214 92% 70%;
+    --info-foreground: 222 70% 10%;
+    --info-soft: 216 45% 15%;
+
+    --shadow-color: 240 60% 2%;
   }
 }
 
@@ -53,7 +114,94 @@
   * {
     @apply border-border;
   }
+
+  html {
+    scroll-behavior: smooth;
+    /* Sticky header is 4rem — keep anchor targets clear of it */
+    scroll-padding-top: 5.5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-display tracking-tight;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* One consistent, always-visible keyboard focus treatment */
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background rounded-sm;
+  }
+
+  ::selection {
+    background-color: hsl(var(--primary) / 0.22);
+  }
+}
+
+@layer components {
+  /* Scroll-reveal: visible by default so content never depends on JS */
+  .reveal {
+    opacity: 1;
+  }
+
+  .reveal[data-reveal="pending"] {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  .reveal[data-reveal="shown"] {
+    animation: fade-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: var(--reveal-delay, 0ms);
+  }
+
+  .prose-note a {
+    @apply text-primary underline underline-offset-4 decoration-primary/40 hover:decoration-primary transition-colors;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Editorial grid paper, used behind the hero */
+  .bg-grid {
+    background-image: linear-gradient(hsl(var(--border) / 0.65) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--border) / 0.65) 1px, transparent 1px);
+    background-size: 56px 56px;
+    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);
+  }
+}
+
+/* Honour the OS motion setting — no exceptions */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal[data-reveal="pending"] {
+    opacity: 1;
+    transform: none;
   }
 }

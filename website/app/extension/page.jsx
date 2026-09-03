@@ -1,467 +1,348 @@
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Badge } from "@/components/ui/button"
-import { AlertCircle, CheckCircle, Download, Github, ExternalLink, Code, Shield, Zap } from "lucide-react"
-import Link from "next/link"
+import {
+  AlertCircle,
+  Chrome,
+  Code2,
+  ExternalLink,
+  Github,
+  Highlighter,
+  Mail,
+  ScanEye,
+  ServerCog,
+  Tags,
+  Zap,
+} from "lucide-react"
+import SectionHeading from "@/components/section-heading"
+import { CONTACT, REPO, REPO_DIR, REPO_ISSUES, REPO_SLUG, SITE } from "@/lib/site"
+
+export const metadata = {
+  title: "SLAG browser extension",
+  description:
+    "Install SLAG, the open-source browser extension that flags dark patterns on the pages you visit.",
+}
+
+const FEATURES = [
+  {
+    icon: Zap,
+    title: "Real-time detection",
+    body: "Page text is tokenised on load and classified as you browse.",
+  },
+  {
+    icon: Highlighter,
+    title: "In-page highlighting",
+    body: "Suspected patterns are marked where they appear, not in a separate report.",
+  },
+  {
+    icon: Tags,
+    title: "Pattern classification",
+    body: "A second model names the category — urgency, scarcity, misdirection and so on.",
+  },
+  {
+    icon: Code2,
+    title: "Open source",
+    body: "Models, training data and extension source are all in the repository.",
+  },
+]
+
+const DETECTED = [
+  "Confirmshaming",
+  "Fake Urgency",
+  "Hidden Costs",
+  "Forced Continuity",
+  "Trick Questions",
+  "Misdirection",
+  "Visual Interference",
+  "Roach Motel",
+  "Privacy Zuckering",
+]
+
+function CodeBlock({ children }) {
+  return (
+    <pre className="mt-2 overflow-x-auto rounded-lg border border-border bg-muted/70 px-3 py-2 text-sm">
+      <code className="font-mono">{children}</code>
+    </pre>
+  )
+}
 
 export default function ExtensionPage() {
   return (
-    <div className="container mx-auto px-4 py-12">
-      <h1 className="text-4xl font-bold mb-2">SakV Dark Pattern Detector</h1>
-      <p className="text-xl mb-8 text-muted-foreground">
-        A browser extension to identify and highlight dark patterns while browsing
-      </p>
+    <div className="container py-14 md:py-20">
+      <SectionHeading
+        as="h1"
+        eyebrow="Tooling"
+        title="SLAG dark pattern detector"
+        description="A browser extension that classifies page text with a locally-run model and highlights the dark patterns it finds."
+      />
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2">
-          <section className="mb-10">
-            <div className="bg-card p-8 rounded-lg border border-border mb-8">
-              <div className="flex flex-col md:flex-row items-center gap-6">
-                <div className="bg-primary/10 p-6 rounded-full">
-                  <Shield className="h-16 w-16 text-primary" />
-                </div>
-                <div className="text-center md:text-left">
-                  <h2 className="text-3xl font-bold mb-2">SakV Extension</h2>
-                  <p className="text-lg text-muted-foreground mb-4">
-                    Protect yourself from manipulative design practices while browsing the web
-                  </p>
-                  <div className="flex flex-wrap gap-2 justify-center md:justify-start">
-                    <Link href="https://github.com/sept1st2c/SakV" target="_blank" rel="noopener noreferrer">
-                      <Button className="gap-2">
-                        <Github className="h-4 w-4" />
-                        View on GitHub
-                      </Button>
-                    </Link>
-                    <Link href="https://github.com/sept1st2c/SakV/releases" target="_blank" rel="noopener noreferrer">
-                      <Button variant="outline" className="gap-2">
-                        <Download className="h-4 w-4" />
-                        Download Latest Release
-                      </Button>
-                    </Link>
-                  </div>
-                </div>
+      <div className="mt-12 grid gap-10 lg:grid-cols-3 lg:gap-12">
+        <div className="space-y-12 lg:col-span-2">
+          <div className="flex flex-col items-start gap-6 rounded-2xl border border-border bg-surface p-6 shadow-soft sm:flex-row sm:items-center sm:p-8">
+            <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+              <ScanEye className="h-8 w-8" aria-hidden="true" />
+            </span>
+            <div>
+              <h2 className="font-display text-2xl font-semibold">Beta, install from source</h2>
+              <p className="mt-2 text-muted-foreground">
+                There is no store listing yet. The extension is loaded unpacked from a clone of the
+                repository and talks to a small classification API you run locally.
+              </p>
+              <div className="mt-5 flex flex-wrap gap-2">
+                <Button asChild>
+                  <a href={REPO} target="_blank" rel="noopener noreferrer">
+                    <Github className="mr-2 h-4 w-4" />
+                    View on GitHub
+                  </a>
+                </Button>
+                <Button asChild variant="outline">
+                  <a href="#install">Installation steps</a>
+                </Button>
               </div>
             </div>
+          </div>
 
-            <Tabs defaultValue="features" className="w-full">
-              <TabsList className="grid w-full grid-cols-3">
-                <TabsTrigger value="features">Features</TabsTrigger>
-                <TabsTrigger value="installation">Installation</TabsTrigger>
-                <TabsTrigger value="usage">Usage Guide</TabsTrigger>
-              </TabsList>
+          <Tabs defaultValue="features" className="w-full">
+            <TabsList className="grid h-auto w-full grid-cols-3 gap-1 p-1">
+              <TabsTrigger value="features" className="py-2">Features</TabsTrigger>
+              <TabsTrigger value="installation" className="py-2">Installation</TabsTrigger>
+              <TabsTrigger value="usage" className="py-2">Usage</TabsTrigger>
+            </TabsList>
 
-              <TabsContent value="features" className="mt-6">
-                <h3 className="text-2xl font-semibold mb-4">Key Features</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                  <Card>
-                    <CardContent className="pt-6">
-                      <div className="flex items-start gap-3">
-                        <Zap className="h-5 w-5 text-yellow-500 mt-0.5" />
-                        <div>
-                          <h4 className="font-medium mb-1">Real-time Detection</h4>
-                          <p className="text-sm text-muted-foreground">
-                            Automatically scans webpages for common dark patterns as you browse
-                          </p>
-                        </div>
+            <TabsContent value="features" className="mt-8">
+              <div className="grid gap-4 sm:grid-cols-2">
+                {FEATURES.map((feature) => (
+                  <Card key={feature.title}>
+                    <CardContent className="flex gap-3 pt-6">
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground">
+                        <feature.icon className="h-4 w-4" aria-hidden="true" />
+                      </span>
+                      <div>
+                        <h3 className="font-medium">{feature.title}</h3>
+                        <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{feature.body}</p>
                       </div>
                     </CardContent>
                   </Card>
+                ))}
+              </div>
 
-                  <Card>
-                    <CardContent className="pt-6">
-                      <div className="flex items-start gap-3">
-                        <AlertCircle className="h-5 w-5 text-red-500 mt-0.5" />
-                        <div>
-                          <h4 className="font-medium mb-1">Visual Highlighting</h4>
-                          <p className="text-sm text-muted-foreground">
-                            Highlights detected dark patterns directly on the webpage
-                          </p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  <Card>
-                    <CardContent className="pt-6">
-                      <div className="flex items-start gap-3">
-                        <CheckCircle className="h-5 w-5 text-green-500 mt-0.5" />
-                        <div>
-                          <h4 className="font-medium mb-1">Pattern Classification</h4>
-                          <p className="text-sm text-muted-foreground">
-                            Identifies specific types of dark patterns (confirmshaming, fake urgency, etc.)
-                          </p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  <Card>
-                    <CardContent className="pt-6">
-                      <div className="flex items-start gap-3">
-                        <Code className="h-5 w-5 text-blue-500 mt-0.5" />
-                        <div>
-                          <h4 className="font-medium mb-1">Open Source</h4>
-                          <p className="text-sm text-muted-foreground">
-                            Fully transparent codebase that anyone can inspect, modify, or contribute to
-                          </p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-
-                <h3 className="text-2xl font-semibold mb-4">Detected Dark Patterns</h3>
-                <p className="mb-4">The SakV extension can detect various types of dark patterns, including:</p>
-
-                <div className="flex flex-wrap gap-2 mb-6">
-                  <Badge variant="outline">Confirmshaming</Badge>
-                  <Badge variant="outline">Fake Urgency</Badge>
-                  <Badge variant="outline">Hidden Costs</Badge>
-                  <Badge variant="outline">Forced Continuity</Badge>
-                  <Badge variant="outline">Trick Questions</Badge>
-                  <Badge variant="outline">Misdirection</Badge>
-                  <Badge variant="outline">Visual Interference</Badge>
-                  <Badge variant="outline">Roach Motel</Badge>
-                  <Badge variant="outline">Privacy Zuckering</Badge>
-                </div>
-
-                <div className="bg-muted p-4 rounded-lg">
-                  <p className="text-sm">
-                    <strong>Note:</strong> The extension is continuously improving its detection capabilities. If you
-                    encounter a dark pattern that wasn't detected, please report it to help improve the extension.
-                  </p>
-                </div>
-              </TabsContent>
-
-              <TabsContent value="installation" className="mt-6">
-                <h3 className="text-2xl font-semibold mb-4">Installation Guide</h3>
-
-                <div className="space-y-6">
-                  <div>
-                    <h4 className="text-xl font-medium mb-2">Method 1: Install from GitHub</h4>
-                    <ol className="list-decimal list-inside space-y-3 ml-4">
-                      <li>
-                        <span className="font-medium">Download the extension:</span>
-                        <ul className="list-disc list-inside ml-6 mt-1">
-                          <li>
-                            Go to{" "}
-                            <Link
-                              href="https://github.com/sept1st2c/SakV/releases"
-                              className="text-primary hover:underline"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              https://github.com/sept1st2c/SakV/releases
-                            </Link>
-                          </li>
-                          <li>Download the latest release ZIP file</li>
-                          <li>Extract the ZIP file to a folder on your computer</li>
-                        </ul>
-                      </li>
-                      <li>
-                        <span className="font-medium">Install in Chrome:</span>
-                        <ul className="list-disc list-inside ml-6 mt-1">
-                          <li>Open Chrome and navigate to chrome://extensions/</li>
-                          <li>Enable "Developer mode" using the toggle in the top-right corner</li>
-                          <li>Click "Load unpacked" and select the extracted folder</li>
-                          <li>The SakV extension should now appear in your extensions list</li>
-                        </ul>
-                      </li>
-                      <li>
-                        <span className="font-medium">Install in Firefox:</span>
-                        <ul className="list-disc list-inside ml-6 mt-1">
-                          <li>Open Firefox and navigate to about:debugging#/runtime/this-firefox</li>
-                          <li>Click "Load Temporary Add-on"</li>
-                          <li>Navigate to the extracted folder and select the manifest.json file</li>
-                          <li>The SakV extension should now be installed temporarily</li>
-                        </ul>
-                      </li>
-                    </ol>
-                  </div>
-
-                  <div>
-                    <h4 className="text-xl font-medium mb-2">Method 2: Clone and Build from Source</h4>
-                    <ol className="list-decimal list-inside space-y-3 ml-4">
-                      <li>
-                        <span className="font-medium">Clone the repository:</span>
-                        <div className="bg-muted p-3 rounded-md mt-1 overflow-x-auto">
-                          <code>git clone https://github.com/sept1st2c/SakV.git</code>
-                        </div>
-                      </li>
-                      <li>
-                        <span className="font-medium">Navigate to the project directory:</span>
-                        <div className="bg-muted p-3 rounded-md mt-1 overflow-x-auto">
-                          <code>cd SakV</code>
-                        </div>
-                      </li>
-                      <li>
-                        <span className="font-medium">Install dependencies:</span>
-                        <div className="bg-muted p-3 rounded-md mt-1 overflow-x-auto">
-                          <code>npm install</code>
-                        </div>
-                      </li>
-                      <li>
-                        <span className="font-medium">Build the extension:</span>
-                        <div className="bg-muted p-3 rounded-md mt-1 overflow-x-auto">
-                          <code>npm run build</code>
-                        </div>
-                      </li>
-                      <li>
-                        <span className="font-medium">
-                          Follow the browser-specific installation steps from Method 1 using the built files
-                        </span>
-                      </li>
-                    </ol>
-                  </div>
-                </div>
-              </TabsContent>
-
-              <TabsContent value="usage" className="mt-6">
-                <h3 className="text-2xl font-semibold mb-4">How to Use SakV</h3>
-
-                <div className="space-y-6">
-                  <div>
-                    <h4 className="text-xl font-medium mb-2">Basic Usage</h4>
-                    <ol className="list-decimal list-inside space-y-3 ml-4">
-                      <li>
-                        <span className="font-medium">
-                          After installation, the extension runs automatically in the background
-                        </span>
-                      </li>
-                      <li>
-                        <span className="font-medium">Browse websites as you normally would</span>
-                      </li>
-                      <li>
-                        <span className="font-medium">When a dark pattern is detected:</span>
-                        <ul className="list-disc list-inside ml-6 mt-1">
-                          <li>The extension icon will change to indicate detection</li>
-                          <li>The dark pattern will be highlighted on the page</li>
-                          <li>A tooltip will explain what type of dark pattern was detected</li>
-                        </ul>
-                      </li>
-                      <li>
-                        <span className="font-medium">
-                          Click on the extension icon to see a summary of detected patterns
-                        </span>
-                      </li>
-                    </ol>
-                  </div>
-
-                  <div>
-                    <h4 className="text-xl font-medium mb-2">Extension Settings</h4>
-                    <p className="mb-3">Access settings by clicking the extension icon and selecting "Settings":</p>
-                    <ul className="list-disc list-inside space-y-2 ml-4">
-                      <li>
-                        <span className="font-medium">Toggle specific pattern detection on/off</span>
-                      </li>
-                      <li>
-                        <span className="font-medium">Adjust highlight colors and styles</span>
-                      </li>
-                      <li>
-                        <span className="font-medium">Enable/disable notifications</span>
-                      </li>
-                      <li>
-                        <span className="font-medium">Set sensitivity level for detection</span>
-                      </li>
-                    </ul>
-                  </div>
-
-                  <div>
-                    <h4 className="text-xl font-medium mb-2">Reporting New Dark Patterns</h4>
-                    <p className="mb-3">
-                      If you encounter a dark pattern that wasn't detected, you can help improve the extension:
-                    </p>
-                    <ul className="list-disc list-inside space-y-2 ml-4">
-                      <li>
-                        <span className="font-medium">Click the extension icon and select "Report a Dark Pattern"</span>
-                      </li>
-                      <li>
-                        <span className="font-medium">
-                          Fill out the form with details about the dark pattern and where you found it
-                        </span>
-                      </li>
-                      <li>
-                        <span className="font-medium">
-                          Alternatively, submit a report through our{" "}
-                          <Link href="/report" className="text-primary hover:underline">
-                            website reporting form
-                          </Link>
-                        </span>
-                      </li>
-                      <li>
-                        <span className="font-medium">
-                          For developers, you can also{" "}
-                          <Link
-                            href="https://github.com/sept1st2c/SakV/issues"
-                            className="text-primary hover:underline"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            open an issue on GitHub
-                          </Link>
-                        </span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </TabsContent>
-            </Tabs>
-          </section>
-
-          <section className="mb-10">
-            <h3 className="text-2xl font-semibold mb-4">Screenshots</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Card>
-                <CardContent className="pt-6">
-                  <div className="aspect-video bg-muted rounded-md flex items-center justify-center">
-                    <p className="text-muted-foreground">Extension popup interface</p>
-                  </div>
-                  <p className="mt-2 text-sm text-center">Main extension interface</p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardContent className="pt-6">
-                  <div className="aspect-video bg-muted rounded-md flex items-center justify-center">
-                    <p className="text-muted-foreground">Dark pattern highlighting</p>
-                  </div>
-                  <p className="mt-2 text-sm text-center">Example of highlighted dark pattern</p>
-                </CardContent>
-              </Card>
-            </div>
-          </section>
-
-          <section className="mb-10">
-            <h3 className="text-2xl font-semibold mb-4">Contributing to SakV</h3>
-            <Card>
-              <CardContent className="pt-6">
-                <p className="mb-4">
-                  SakV is an open-source project and welcomes contributions from the community. Here's how you can help:
-                </p>
-                <ul className="list-disc list-inside space-y-2 ml-4">
-                  <li>
-                    <span className="font-medium">Report bugs or suggest features through GitHub issues</span>
+              <h3 className="mt-10 font-display text-xl font-semibold">Patterns it looks for</h3>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Detection is text-based, so patterns that live purely in layout or colour are not yet
+                covered.
+              </p>
+              <ul className="mt-4 flex flex-wrap gap-2">
+                {DETECTED.map((pattern) => (
+                  <li key={pattern}>
+                    <Badge variant="outline">{pattern}</Badge>
                   </li>
-                  <li>
-                    <span className="font-medium">Submit pull requests with code improvements or new features</span>
-                  </li>
-                  <li>
-                    <span className="font-medium">Help improve documentation</span>
-                  </li>
-                  <li>
-                    <span className="font-medium">Share the extension with others to increase awareness</span>
-                  </li>
-                </ul>
-                <div className="mt-4">
-                  <Link
-                    href="https://github.com/sept1st2c/SakV/blob/main/CONTRIBUTING.md"
-                    className="text-primary hover:underline flex items-center"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <ExternalLink className="h-4 w-4 mr-1" />
-                    View contribution guidelines
-                  </Link>
-                </div>
-              </CardContent>
-            </Card>
-          </section>
+                ))}
+              </ul>
+
+              <p className="mt-6 flex items-start gap-2.5 rounded-xl border border-info/30 bg-info-soft p-4 text-sm leading-relaxed">
+                <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-info" aria-hidden="true" />
+                <span>
+                  Detection is probabilistic — expect both false positives and misses. If you find a
+                  pattern it does not catch,{" "}
+                  <Link href="/report" className="font-medium text-primary underline underline-offset-4">
+                    report it
+                  </Link>{" "}
+                  so it can go into the training data.
+                </span>
+              </p>
+            </TabsContent>
+
+            <TabsContent value="installation" id="install" className="mt-8 scroll-mt-24">
+              <h3 className="font-display text-xl font-semibold">1. Start the classification API</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                The extension sends page text to a Flask service on{" "}
+                <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">127.0.0.1:5000</code>.
+                Nothing leaves your machine.
+              </p>
+              <CodeBlock>{`git clone ${REPO}
+cd ${REPO_DIR}/api
+pip install -r requirements.txt
+python app.py`}</CodeBlock>
+
+              <h3 className="mt-8 font-display text-xl font-semibold">2. Load the extension</h3>
+              <ol className="mt-3 space-y-2.5 text-sm leading-relaxed text-muted-foreground">
+                <li className="flex gap-3">
+                  <span className="font-mono text-xs text-primary">01</span>
+                  <span>
+                    Open <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">chrome://extensions</code>{" "}
+                    (or <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">edge://extensions</code>).
+                  </span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="font-mono text-xs text-primary">02</span>
+                  <span>Turn on <strong className="text-foreground">Developer mode</strong>.</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="font-mono text-xs text-primary">03</span>
+                  <span>
+                    Choose <strong className="text-foreground">Load unpacked</strong> and select the{" "}
+                    <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">extension/</code> folder
+                    from the clone.
+                  </span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="font-mono text-xs text-primary">04</span>
+                  <span>
+                    It appears in the list as <strong className="text-foreground">{SITE.manifestName}</strong>.
+                  </span>
+                </li>
+              </ol>
+
+              <h3 className="mt-8 font-display text-xl font-semibold">Firefox</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                Open <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">about:debugging#/runtime/this-firefox</code>,
+                choose <strong className="text-foreground">Load Temporary Add-on</strong>, and select{" "}
+                <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">extension/manifest.json</code>.
+                Temporary add-ons are removed when Firefox restarts.
+              </p>
+
+              <p className="mt-8 flex items-start gap-2.5 rounded-xl border border-warn/30 bg-warn-soft p-4 text-sm leading-relaxed">
+                <ServerCog className="mt-0.5 h-4 w-4 shrink-0 text-warn" aria-hidden="true" />
+                <span>
+                  The API has to be running before the extension can classify anything. If pages are
+                  never flagged, check that{" "}
+                  <code className="rounded bg-background/60 px-1.5 py-0.5 font-mono text-xs">python app.py</code>{" "}
+                  is still up.
+                </span>
+              </p>
+            </TabsContent>
+
+            <TabsContent value="usage" className="mt-8">
+              <h3 className="font-display text-xl font-semibold">Day to day</h3>
+              <ol className="mt-4 space-y-3 text-sm leading-relaxed text-muted-foreground">
+                <li className="flex gap-3">
+                  <span className="font-mono text-xs text-primary">01</span>
+                  <span>Browse normally — the content script runs when a page finishes loading.</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="font-mono text-xs text-primary">02</span>
+                  <span>Suspected dark patterns are highlighted in place on the page.</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="font-mono text-xs text-primary">03</span>
+                  <span>Click the toolbar icon for a summary of what was found on the current tab.</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="font-mono text-xs text-primary">04</span>
+                  <span>
+                    Something missed?{" "}
+                    <Link href="/report" className="font-medium text-primary underline underline-offset-4">
+                      Send a report
+                    </Link>{" "}
+                    or open an issue on GitHub.
+                  </span>
+                </li>
+              </ol>
+
+              <h3 className="mt-10 font-display text-xl font-semibold">Contributing</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                The most useful contribution is labelled data. Training sets live in{" "}
+                <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">training/</code> as CSV,
+                and the classifiers are rebuilt from them.
+              </p>
+              <Button asChild variant="outline" className="mt-4">
+                <a href={REPO_ISSUES} target="_blank" rel="noopener noreferrer">
+                  <ExternalLink className="mr-2 h-4 w-4" />
+                  Open an issue
+                </a>
+              </Button>
+            </TabsContent>
+          </Tabs>
         </div>
 
-        <div className="lg:col-span-1">
-          <div className="sticky top-24 space-y-6">
+        <aside className="lg:col-span-1">
+          <div className="space-y-5 lg:sticky lg:top-24">
             <Card>
               <CardHeader>
-                <CardTitle>Project Information</CardTitle>
+                <CardTitle className="font-display text-lg">Project details</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
+                <dl className="space-y-4 text-sm">
                   <div>
-                    <h4 className="text-sm font-medium text-muted-foreground">Repository</h4>
-                    <Link
-                      href="https://github.com/sept1st2c/SakV"
-                      className="flex items-center text-primary hover:underline"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Github className="h-4 w-4 mr-1" />
-                      github.com/sept1st2c/SakV
-                    </Link>
+                    <dt className="text-xs uppercase tracking-wider text-muted-foreground">Repository</dt>
+                    <dd className="mt-1">
+                      <a
+                        href={REPO}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 font-medium text-primary hover:underline"
+                      >
+                        <Github className="h-4 w-4" aria-hidden="true" />
+                        {REPO_SLUG}
+                      </a>
+                    </dd>
                   </div>
-
                   <div>
-                    <h4 className="text-sm font-medium text-muted-foreground">Latest Version</h4>
-                    <p>v0.1.0 (Beta)</p>
+                    <dt className="text-xs uppercase tracking-wider text-muted-foreground">Manifest name</dt>
+                    <dd className="mt-1">
+                      {SITE.manifestName} v{SITE.extensionVersion} (Manifest V3)
+                    </dd>
                   </div>
-
                   <div>
-                    <h4 className="text-sm font-medium text-muted-foreground">Supported Browsers</h4>
-                    <ul className="list-disc list-inside text-sm ml-2">
-                      <li>Google Chrome</li>
-                      <li>Mozilla Firefox</li>
-                      <li>Microsoft Edge</li>
-                    </ul>
+                    <dt className="text-xs uppercase tracking-wider text-muted-foreground">Browsers</dt>
+                    <dd className="mt-1 flex items-center gap-1.5">
+                      <Chrome className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+                      Chrome, Edge, Firefox (temporary)
+                    </dd>
                   </div>
-
                   <div>
-                    <h4 className="text-sm font-medium text-muted-foreground">License</h4>
-                    <p>MIT License</p>
+                    <dt className="text-xs uppercase tracking-wider text-muted-foreground">Requires</dt>
+                    <dd className="mt-1">Python 3 + Flask API running locally</dd>
                   </div>
-                </div>
+                </dl>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader>
-                <CardTitle>Contact Developer</CardTitle>
+                <CardTitle className="font-display text-lg">Contact</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="mb-4">
-                  Have questions, feedback, or want to report issues with the extension? Get in touch:
+                <p className="text-sm leading-relaxed text-muted-foreground">
+                  Questions, feedback, or a bug in the detector?
                 </p>
-                <Link href="mailto:3shubh17@gmail.com" className="flex items-center text-primary hover:underline">
-                  <ExternalLink className="h-4 w-4 mr-1" />
-                  3shubh17@gmail.com
-                </Link>
+                <Button asChild variant="outline" className="mt-4 w-full">
+                  <a href={CONTACT}>
+                    <Mail className="mr-2 h-4 w-4" />
+                    Email the maintainer
+                  </a>
+                </Button>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader>
-                <CardTitle>Related Resources</CardTitle>
+                <CardTitle className="font-display text-lg">Related</CardTitle>
               </CardHeader>
               <CardContent>
-                <ul className="space-y-3">
-                  <li>
-                    <Link href="/types" className="flex items-center text-primary hover:underline">
-                      <ExternalLink className="h-4 w-4 mr-1" />
-                      Types of Dark Patterns
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/examples" className="flex items-center text-primary hover:underline">
-                      <ExternalLink className="h-4 w-4 mr-1" />
-                      Real-Life Examples
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/avoid" className="flex items-center text-primary hover:underline">
-                      <ExternalLink className="h-4 w-4 mr-1" />
-                      How to Avoid Dark Patterns
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/report" className="flex items-center text-primary hover:underline">
-                      <ExternalLink className="h-4 w-4 mr-1" />
-                      Report a Dark Pattern
-                    </Link>
-                  </li>
+                <ul className="space-y-2.5 text-sm">
+                  {[
+                    { href: "/types", label: "Types of dark patterns" },
+                    { href: "/examples", label: "Real-life examples" },
+                    { href: "/avoid", label: "How to avoid them" },
+                    { href: "/report", label: "Report a dark pattern" },
+                  ].map((link) => (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
+                        className="text-muted-foreground transition-colors hover:text-primary"
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
                 </ul>
               </CardContent>
             </Card>
           </div>
-        </div>
+        </aside>
       </div>
     </div>
   )

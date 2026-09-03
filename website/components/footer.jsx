@@ -1,117 +1,109 @@
 import Link from "next/link"
-import { Github, Twitter, Mail } from "lucide-react"
+import { Github, Mail, ScanEye } from "lucide-react"
+
+import { CONTACT, REPO } from "@/lib/site"
+
+const siteMap = [
+  { name: "Home", href: "/" },
+  { name: "Types of dark patterns", href: "/types" },
+  { name: "Real-life examples", href: "/examples" },
+  { name: "How to avoid them", href: "/avoid" },
+  { name: "SLAG extension", href: "/extension" },
+  { name: "Report a dark pattern", href: "/report" },
+]
+
+/** External references we actually link to, each a real primary source. */
+const resources = [
+  { name: "Deceptive Design (Harry Brignull)", href: "https://www.deceptive.design/" },
+  { name: "FTC — Bringing Dark Patterns to Light", href: "https://www.ftc.gov/reports/bringing-dark-patterns-light" },
+  { name: "Dark Patterns at Scale (Mathur et al.)", href: "https://arxiv.org/abs/1907.07032" },
+  { name: "EFF Privacy Badger", href: "https://privacybadger.org/" },
+  { name: "SLAG on GitHub", href: REPO },
+]
 
 export default function Footer() {
   return (
-    <footer className="border-t bg-background">
-      <div className="container py-8 md:py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <footer className="border-t border-border bg-surface">
+      <div className="container py-12 md:py-16">
+        <div className="grid gap-10 md:grid-cols-4">
           <div className="md:col-span-2">
-            <Link href="/" className="font-bold text-2xl">
-              DarkPatterns<span className="text-primary">.info</span>
+            <Link href="/" className="inline-flex items-center gap-2 font-display text-xl font-semibold">
+              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+                <ScanEye className="h-[18px] w-[18px]" aria-hidden="true" />
+              </span>
+              DarkPatterns<span className="-ml-1 text-primary">.info</span>
             </Link>
-            <p className="mt-2 text-muted-foreground">
-              Educating users about deceptive design practices and promoting ethical web design.
+            <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
+              An open project documenting deceptive design — so that the tricks stop working once
+              you can name them.
             </p>
-            <div className="flex mt-4 space-x-4">
-              <Link href="https://github.com/sept1st2c/SakV" className="text-muted-foreground hover:text-primary">
-                <Github className="h-5 w-5" />
-                <span className="sr-only">GitHub</span>
-              </Link>
-              <Link href="https://twitter.com" className="text-muted-foreground hover:text-primary">
-                <Twitter className="h-5 w-5" />
-                <span className="sr-only">Twitter</span>
-              </Link>
-              <Link href="mailto:3shubh17@gmail.com" className="text-muted-foreground hover:text-primary">
-                <Mail className="h-5 w-5" />
-                <span className="sr-only">Email</span>
-              </Link>
+            <div className="mt-6 flex gap-2">
+              <a
+                href={REPO}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex h-10 w-10 items-center justify-center rounded-lg border border-border text-muted-foreground transition-colors hover:border-primary/50 hover:text-primary"
+              >
+                <Github className="h-[18px] w-[18px]" aria-hidden="true" />
+                <span className="sr-only">SLAG on GitHub</span>
+              </a>
+              <a
+                href={CONTACT}
+                className="flex h-10 w-10 items-center justify-center rounded-lg border border-border text-muted-foreground transition-colors hover:border-primary/50 hover:text-primary"
+              >
+                <Mail className="h-[18px] w-[18px]" aria-hidden="true" />
+                <span className="sr-only">Email the maintainers</span>
+              </a>
             </div>
           </div>
 
-          <div>
-            <h3 className="font-medium mb-3">Site Map</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link href="/" className="text-muted-foreground hover:text-primary">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link href="/types" className="text-muted-foreground hover:text-primary">
-                  Types of Dark Patterns
-                </Link>
-              </li>
-              <li>
-                <Link href="/examples" className="text-muted-foreground hover:text-primary">
-                  Real-Life Examples
-                </Link>
-              </li>
-              <li>
-                <Link href="/avoid" className="text-muted-foreground hover:text-primary">
-                  How to Avoid
-                </Link>
-              </li>
-              <li>
-                <Link href="/extension" className="text-muted-foreground hover:text-primary">
-                  SakV Extension
-                </Link>
-              </li>
-              <li>
-                <Link href="/report" className="text-muted-foreground hover:text-primary">
-                  Report a Dark Pattern
-                </Link>
-              </li>
+          <nav aria-labelledby="footer-sitemap">
+            <h2 id="footer-sitemap" className="font-display text-sm font-semibold uppercase tracking-wider">
+              Site map
+            </h2>
+            <ul className="mt-2 text-sm sm:mt-4 sm:space-y-2.5">
+              {siteMap.map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className="inline-flex min-h-[44px] items-center text-muted-foreground transition-colors hover:text-primary sm:min-h-0"
+                  >
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
-          </div>
+          </nav>
 
-          <div>
-            <h3 className="font-medium mb-3">Resources</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link href="https://github.com/sept1st2c/SakV" className="text-muted-foreground hover:text-primary">
-                  GitHub Repository
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="text-muted-foreground hover:text-primary">
-                  Legal Resources
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="text-muted-foreground hover:text-primary">
-                  Design Guidelines
-                </Link>
-              </li>
-              <li>
-                <Link href="/extension" className="text-muted-foreground hover:text-primary">
-                  Browser Extension
-                </Link>
-              </li>
-              <li>
-                <Link href="mailto:3shubh17@gmail.com" className="text-muted-foreground hover:text-primary">
-                  Contact Us
-                </Link>
-              </li>
+          <nav aria-labelledby="footer-resources">
+            <h2 id="footer-resources" className="font-display text-sm font-semibold uppercase tracking-wider">
+              Resources
+            </h2>
+            <ul className="mt-2 text-sm sm:mt-4 sm:space-y-2.5">
+              {resources.map((item) => (
+                <li key={item.href}>
+                  <a
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex min-h-[44px] items-center text-muted-foreground transition-colors hover:text-primary sm:min-h-0"
+                  >
+                    {item.name}
+                  </a>
+                </li>
+              ))}
             </ul>
-          </div>
+          </nav>
         </div>
 
-        <div className="mt-8 pt-8 border-t flex flex-col md:flex-row justify-between items-center">
-          <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} DarkPatterns.info. All rights reserved.
+        <div className="mt-12 flex flex-col gap-3 border-t border-border pt-6 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+          <p>© {new Date().getFullYear()} DarkPatterns.info — an open-source project.</p>
+          <p>
+            Educational content only, not legal advice.{" "}
+            <a href={CONTACT} className="underline underline-offset-4 transition-colors hover:text-primary">
+              Get in touch
+            </a>
           </p>
-          <div className="mt-4 md:mt-0 flex space-x-4 text-sm text-muted-foreground">
-            <Link href="#" className="hover:text-primary">
-              Privacy Policy
-            </Link>
-            <Link href="#" className="hover:text-primary">
-              Terms of Service
-            </Link>
-            <Link href="#" className="hover:text-primary">
-              Cookie Policy
-            </Link>
-          </div>
         </div>
       </div>
     </footer>
