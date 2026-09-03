@@ -20,9 +20,10 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { AlertCircle, Check, CheckCircle2, Mail, ShieldCheck } from "lucide-react"
 import SectionHeading from "@/components/section-heading"
 import { REPORT_PATTERN_OPTIONS } from "@/lib/patterns"
+import { SITE } from "@/lib/site"
 import { cn } from "@/lib/utils"
 
-const CONTACT_EMAIL = "3shubh17@gmail.com"
+const CONTACT_EMAIL = SITE.contactEmail
 
 const EMPTY_FORM = {
   website: "",

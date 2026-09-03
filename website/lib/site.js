@@ -13,7 +13,7 @@ export const SITE = {
   /** Name shown by the browser after loading the unpacked extension. */
   manifestName: "SLAG",
   extensionVersion: "1.2",
-  contactEmail: "3shubh17@gmail.com",
+  contactEmail: "vanshvermax@gmail.com",
   repo: "https://github.com/vanshvv/DarkPattern-Detector-SLAG",
 }
 
